@@ -200,7 +200,7 @@ Function Main()
 		Sleep(60*60)
 	Endif
 	
-	'Make package
+	'Make output
 	Print ""
 	Local filename:=StripDir( Output ).Left(4).ToLower().Replace( " ", "_" )
 	filename+="-"+Config.Left(3)
@@ -212,7 +212,6 @@ Function Main()
 	filename+=GetMinute()
 	filename+=").7z"
 	
-	'filename+=
 	Sleep(0.25)
 	Print "=7-ZIP="
 	Sleep(0.25)
