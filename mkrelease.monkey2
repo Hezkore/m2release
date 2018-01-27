@@ -10,6 +10,7 @@ Global Config:String
 Global Target:String
 Global Source:String
 Global Output:String
+Global DoneCmd:String
 
 Function Main()
 	If CurrentDir()=AppDir() Then
@@ -202,15 +203,31 @@ Function Main()
 	
 	'Make output
 	Print ""
-	Local filename:=StripDir( Output ).Left(4).ToLower().Replace( " ", "_" )
-	filename+="-"+Config.Left(3)
-	filename+="-"+Target.Left(3)+"("
-	filename+=Time.Now().ToString().Mid(4,2)
-	filename+=Time.Now().ToString().Mid(7,3)
-	filename+=Time.Now().ToString().Mid(13,2)+"-"
+	' Name
+	Local filename:=StripDir( Output ).Left(4).ToLower().Replace( " ", "_" )+"-"
+	'filename+=Config.Left(3)+"-"
+	
+	'Target
+	If Target="desktop" Then
+		#If __HOSTOS__="macos"
+			filename+="mac"
+		#Else If __HOSTOS__="windows"
+			filename+="win"
+		#Else
+			filename+="lin"
+		#Endif
+	Else
+		filename+=Target.Left(3)
+	Endif
+	
+	filename+="-" 'Time
 	filename+=GetHour()+"."
 	filename+=GetMinute()
-	filename+=").7z"
+	filename+="-" 'Date
+	filename+=Time.Now().ToString().Mid(4,2)
+	filename+=Time.Now().ToString().Mid(7,3)
+	filename+=Time.Now().ToString().Mid(13,2)
+	filename+=".7z" 'Extension
 	
 	Sleep(0.25)
 	Print "=7-ZIP="
@@ -221,9 +238,36 @@ Function Main()
 		Sleep(60*60)
 	Endif
 	
+	'Ending command
+	If DoneCmd Then
+		Sleep(0.25)
+		Print ""
+		Print "=CMD="
+		Sleep(0.25)
+		Print "Executing: "+DoneCmd.Replace( "%output%", Output )
+		Local exitCode:=libc.system( DoneCmd )
+		If exitCode Then
+			Sleep(1)
+			Print "Error "+exitCode
+			Sleep(1)
+		Else
+			Print "CMD complete"
+		Endif
+	End
+	
 	'Cleanup
+	Sleep(0.25)
+	Print ""
+	Print "=CLEANUP="
+	Sleep(0.25)
 	While GetFileType( tmpDir )=FileType.Directory
 		DeleteDir( tmpDir, True )
+		If GetFileType( tmpDir )=FileType.Directory Then
+			Print "Retrying..."
+			Sleep(1)
+		Else
+			Print "Clean complete"
+		Endif
 	Wend
 	
 	'Done :)
@@ -249,6 +293,12 @@ Function ProcessCfgLine( line:String )
 	If line.ToLower().StartsWith("type=") Then
 		Type=line.Slice(5)
 		Print "TYPE="+Type.ToLower()
+		Return
+	Endif
+	
+	If line.ToLower().StartsWith("done=") Then
+		DoneCmd=line.Slice(5)
+		Print "DONE="+DoneCmd.ToLower()
 		Return
 	Endif
 	
