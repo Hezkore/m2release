@@ -38,3 +38,5 @@ If no 'output' is provided; m2release will try to figure out where to output via
 * Depending on your 'config' setting the folder name can either be 'release' or 'debug'
 * If the project is inside its own folder, output will happen in its own folder
 * If the project is inside a folder named 'src' or 'source', output will happen in the previous folder
+
+Latest releases @ http://hezkore.com/release/m2release/
