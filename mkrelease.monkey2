@@ -186,14 +186,16 @@ Function Main()
 		Print ""
 	Endif
 	
-	Local tmpDir:String=CurrentDir()+"tmp_"+Now()+"/"
+	Local projectName:String=StripDir( Output )
+	
+	Local tmpDir:String=CurrentDir()+"mkrelease_tmp"+Now()+"/"
 	CreateDir( tmpDir, True, True )
 	
 	'DO STUFF!
 	Print "Ready to start"
 	Sleep(0.25)
 	Print "=MONKEY2="
-	Print "Working in: ~q"+tmpDir+StripDir(Output)+"~q"
+	Print "Working in: ~q"+tmpDir+StripDir( Output )+"~q"
 	Sleep(0.25)
 	If libc.system( "~q"+M2Path+"~q makeapp -clean -apptype="+Type+" -build -config="+Config+" -product=~q"+tmpDir+StripDir(Output)+"~q ~q"+Source+"~q" )
 		Sleep(1)
@@ -244,7 +246,8 @@ Function Main()
 		Print ""
 		Print "=CMD="
 		Sleep(0.25)
-		Print "Executing: "+DoneCmd.Replace( "%output%", Output )
+		DoneCmd=DoneCmd.Replace( "%output%", (ExtractDir( Output )+filename).Replace("/","\") ).Replace( "%name%", projectName )
+		Print "Executing: "+DoneCmd
 		Local exitCode:=libc.system( DoneCmd )
 		If exitCode Then
 			Sleep(1)
