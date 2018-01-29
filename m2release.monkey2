@@ -226,10 +226,10 @@ Function Main()
 	Endif
 	
 	'Arch
-	#If __ARCH__="x86"
-		filename+="86"
-	#Elseif
+	#If __ARCH__="x64"
 		filename+="64"
+	#Elseif
+		filename+="86"
 	#Endif
 	
 	filename+="-" 'Date
