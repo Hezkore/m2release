@@ -218,8 +218,10 @@ Function Main()
 			filename+="mac"
 		#ElseIf __HOSTOS__="windows"
 			filename+="win"
-		#Else
+		#ElseIf __HOSTOS__="linux"
 			filename+="lin"
+		#Else
+			filename+="unk"
 		#Endif
 	Else
 		filename+=Target.Left(3)
