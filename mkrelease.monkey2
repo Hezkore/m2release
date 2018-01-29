@@ -204,7 +204,7 @@ Function Main()
 	'Make output
 	Print ""
 	' Name
-	Local filename:=StripDir( Output ).Left(4).ToLower().Replace( " ", "_" )+"-"
+	Local filename:=StripDir( Output ).ToLower().Replace( " ", "_" )+"-"
 	'filename+=Config.Left(3)+"-"
 	
 	'Target
@@ -220,13 +220,13 @@ Function Main()
 		filename+=Target.Left(3)
 	Endif
 	
-	filename+="-" 'Time
-	filename+=GetHour()+"."
-	filename+=GetMinute()
 	filename+="-" 'Date
-	filename+=Time.Now().ToString().Mid(4,2)
-	filename+=Time.Now().ToString().Mid(7,3)
-	filename+=Time.Now().ToString().Mid(13,2)
+	filename+=Time.Now().Year+"-"
+	filename+=DatePad(Time.Now().Month+1)+"-"
+	filename+=DatePad(Time.Now().Day)
+	filename+="-" 'Time
+	filename+=DatePad(Time.Now().Hours)+"."
+	filename+=DatePad(Time.Now().Minutes)
 	filename+=".7z" 'Extension
 	
 	Sleep(0.25)
@@ -328,14 +328,9 @@ Function ProcessCfgLine( line:String )
 	
 End
 
-Function GetHour:String()
-	Local result:=Time.Now().ToString().Slice(16).Split(":")[0]
-	If result.Length<=1 Then result="0"+result
-	Return result
-End
-
-Function GetMinute:String()
-	Local result:=Time.Now().ToString().Slice(16).Split(":")[1]
-	If result.Length<=1 Then result="0"+result
-	Return result
+Function DatePad:String( str:String, len:Int=2 )
+	While str.Length<len
+		str="0"+str
+	Wend
+	Return str
 End
