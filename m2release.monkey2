@@ -216,7 +216,7 @@ Function Main()
 	If Target="desktop" Then
 		#If __HOSTOS__="macos"
 			filename+="mac"
-		#Else If __HOSTOS__="windows"
+		#ElseIf __HOSTOS__="windows"
 			filename+="win"
 		#Else
 			filename+="lin"
@@ -224,6 +224,13 @@ Function Main()
 	Else
 		filename+=Target.Left(3)
 	Endif
+	
+	'Arch
+	#If __ARCH__="x86"
+		filename+="86"
+	#Elseif
+		filename+="64"
+	#Endif
 	
 	filename+="-" 'Date
 	filename+=Time.Now().Year+"-"

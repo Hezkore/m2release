@@ -17,9 +17,9 @@ Compiles & Compresses Monkey2 products
 * Run shortcut
 * A folder is created, compiled to and finally compressed into a 7z file
 
-The final 7z file will be named after the name of your project-platform-date-time
+The final 7z file will be named after the name of your %project-%platform%architecture-%date-%time
 
-The folder name will be your 'config' setting (release/debug)
+The folder name will be your 'config' setting (release or debug)
 
 ### Source
 m2release tries to compile your specified 'source' (source=my_source.monkey2)
