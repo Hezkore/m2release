@@ -1,3 +1,7 @@
+' Monkey2 Make release
+' By @Hezkore 2018
+' https://github.com/Hezkore/m2release
+
 #Import "<std>"
 Using std..
 
@@ -115,7 +119,7 @@ Function Main()
 			dirName=CurrentDir().ToLower()
 			
 			'Is the dir just the SRC dir?
-			If dirName.EndsWith("src/") Then
+			If dirName.EndsWith("src/") Or dirName.EndsWith("source/") Then
 				dirName=dirName.Slice( 0, -4 )
 			Endif
 			
@@ -170,7 +174,7 @@ Function Main()
 		dirName=CurrentDir().ToLower()
 		
 		'Is the dir just the SRC dir?
-		If dirName.EndsWith("src/") Then
+		If dirName.EndsWith("src/") Or dirName.EndsWith("source/") Then
 			dirName=dirName.Slice( 0, -4 )
 		Endif
 		
@@ -188,7 +192,7 @@ Function Main()
 	
 	Local projectName:String=StripDir( Output )
 	
-	Local tmpDir:String=CurrentDir()+"mkrelease_tmp"+Now()+"/"
+	Local tmpDir:String=CurrentDir()+"m2release_tmp"+Now()+"/"
 	CreateDir( tmpDir, True, True )
 	
 	'DO STUFF!
@@ -207,7 +211,6 @@ Function Main()
 	Print ""
 	' Name
 	Local filename:=StripDir( Output ).ToLower().Replace( " ", "_" )+"-"
-	'filename+=Config.Left(3)+"-"
 	
 	'Target
 	If Target="desktop" Then
